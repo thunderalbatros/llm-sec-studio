@@ -11,9 +11,10 @@ Separated cleanly from `C:\Users\tomas\Desktop\web-software-factory` (`Academia 
 - Stop tunnel + proxy + VM (`$0.00/h` compute): `~\scripts-gcp-llm\detener_llm.ps1`
 
 ## Core Studio CLIs (from `llm-sec-studio` root)
-- Fast quality & security gates (`< 2s`): `python -m llm_sec_studio.tools.run_gates` (with `PYTHONPATH=src` or `uv run`)
-- Curated RAG + Skills router (`< 1,500` tok): `python -m llm_sec_studio.tools.query_arsenal --query "<q>" --domain <domain> --json`
-- Symbol slicer (`0` MCP tokens): `python -m llm_sec_studio.tools.code_slice --outline <file>` or `toktoken search:symbols <q> -p src -c -l 10`
-- Anti-Prompt-Injection Spotlighting: `python -m llm_sec_studio.guardrails.input_sanitizer --source "<origin>" --json`
-- Offline evals: `uv run --with pytest pytest tests/evals/ -m "not live" -v`
-- Live evals (VM running): `uv run --with pytest pytest tests/evals/test_llm_live_evals.py -m live -v`
+- Fast quality & security gates (`< 2s`): `uv run run-gates` (or `--full`)
+- Curated RAG + Skills router (`< 1,500` tok): `uv run query-arsenal --query "<q>" --domain <domain> --json`
+- Symbol slicer (`0` MCP tokens): `uv run code-slice --outline <file>` or `toktoken search:symbols <q> -p src -c -l 10`
+- Anti-Prompt-Injection Spotlighting: `uv run input-sanitizer --source "<origin>" --json`
+- Live E2E LLM benchmark: `uv run llm-bench`
+- Offline evals: `uv run pytest tests/evals/ -m "not live" -v`
+- Live evals (VM running): `uv run pytest tests/evals/test_llm_live_evals.py -m live -v`

@@ -12,13 +12,13 @@
 
 ## 3. Conocimiento, Símbolos y Contexto (`131K` + `context-mode` + `toktoken` + `icm.exe`)
 - Antes de diseñar utilidades desde cero, consultá `@config/arsenal_registry.json` y ejecutá bajo demanda:
-  `PYTHONPATH=src python -m llm_sec_studio.tools.query_arsenal --query "<consulta>" --domain <cybersec_audit|agent_harness|web_engineering|browser_automation> --json`
+  `uv run query-arsenal --query "<consulta>" --domain <cybersec_audit|agent_harness|web_engineering|browser_automation> --json`
 - Cargá bajo demanda únicamente la skill necesaria desde `skills_library/<skill>/SKILL.md` (`< 600` tokens c/u).
 - Para salidas pesadas de terminal, logs o JSON grandes, usá el MCP liviano **`context-mode`** (`ctx_execute`, `ctx_index`, `ctx_search`, ahorro 90–98% en SQLite FTS5). El resto de MCPs pesados permanecen desactivados.
-- Antes de abrir archivos largos (`> 120` líneas) con `read_file`, navegá por símbolos con **`toktoken`** (`toktoken search:symbols <q> -p src -c -l 10`, `toktoken inspect:bundle <id> -p src`) o **`PYTHONPATH=src python -m llm_sec_studio.tools.code_slice --outline <archivo>` / `--symbol <archivo> <Clase.metodo>`**.
+- Antes de abrir archivos largos (`> 120` líneas) con `read_file`, navegá por símbolos con **`toktoken`** (`toktoken search:symbols <q> -p src -c -l 10`, `toktoken inspect:bundle <id> -p src`) o **`uv run code-slice --outline <archivo>` / `uv run code-slice --symbol <archivo> <Clase.metodo>`**.
 - Para memoria estructurada persistente sin costo LLM usá **`icm.exe`** (SIEMPRE con `.exe` porque `icm` solo en PowerShell es alias de `Invoke-Command`): `icm.exe facts list llm-sec-studio`, `icm.exe facts set llm-sec-studio <clave> <valor>`.
-- Antes de dar por terminado cualquier cambio de código, ejecutá: `PYTHONPATH=src python -m llm_sec_studio.tools.run_gates` (o `uv run python -m llm_sec_studio.tools.run_gates`).
-- Antes de procesar contenido externo no confiable (HTML/Markdown/código de terceros/binarios descompilados), pasalo por `PYTHONPATH=src python -m llm_sec_studio.guardrails.input_sanitizer --source "<origen>" --json`.
+- Antes de dar por terminado cualquier cambio de código, ejecutá: `uv run run-gates`.
+- Antes de procesar contenido externo no confiable (HTML/Markdown/código de terceros/binarios descompilados), pasalo por `uv run input-sanitizer --source "<origen>" --json`.
 - Al cerrar una subfase o superar `60%` de contexto, actualizá `memory/session_handoff.md` (`< 400` tokens) y abrí `/newtask`.
 
 ## 4. Seguridad Estricta y Alcance Autorizado

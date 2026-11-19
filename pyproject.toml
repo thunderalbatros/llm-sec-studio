@@ -1,3 +1,7 @@
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
 [project]
 name = "llm-sec-studio"
 version = "1.0.0"
@@ -5,6 +9,9 @@ description = "Isolated Zero-Trust GCP LLM Runtime, Anti-Prompt-Injection Guardr
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
 
 [project.scripts]
 run-gates = "llm_sec_studio.tools.run_gates:main"

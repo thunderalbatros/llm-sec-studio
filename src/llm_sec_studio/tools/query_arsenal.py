@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-tools/query_arsenal.py — On-demand curated RAG router across WSF, Centinela, and StreamerBot.
+llm_sec_studio.tools.query_arsenal — On-demand curated RAG router across WSF, Centinela, and StreamerBot.
 Strictly enforces domain allowlists, excludes entertainment/casino noise, and bounds output <= 1500 tokens.
 """
 import argparse

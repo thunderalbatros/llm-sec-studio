@@ -1,4 +1,4 @@
-"""Deterministic evals for tools/code_slice.py and tools/token_audit_proxy.py."""
+"""Deterministic evals for llm_sec_studio.tools.code_slice and llm_sec_studio.tools.token_audit_proxy."""
 from pathlib import Path
 
 from llm_sec_studio.tools.code_slice import extract_symbol, get_outline

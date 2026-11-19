@@ -14,13 +14,13 @@ Use when refactoring repeated code patterns, migrating deprecated APIs, or enfor
 - **Rule-based SAST scan:** `ast-grep scan --rule config/ast_rules/security_baseline.yml <path>`.
 - **JS/TS fast lint:** `rtk npx oxlint --quiet <files>` (Rust Oxc, `< 200ms`).
 - **Python lint & types:** `ruff check <files>` + `ty check <files>` (Astral Rust toolchain).
-- **Secret scanning:** `gitleaks detect --no-git --source <path>` or `python tools/run_gates.py`.
+- **Secret scanning:** `gitleaks detect --no-git --source <path>` or `uv run run-gates`.
 
 ## 2. Safe Surgical Refactoring Protocol
 1. Capture baseline test/lint status before editing.
 2. Preview matches first (`ast-grep --pattern ...` without `--update-all`) to confirm zero unintended edits.
 3. Apply minimal contiguous edits; avoid drive-by reformatting of unrelated lines.
-4. Run `python tools/run_gates.py` + unit tests immediately after editing; never declare done without observing exit code `0`.
+4. Run `uv run run-gates` + unit tests immediately after editing; never declare done without observing exit code `0`.
 
 ## 3. Anti-Bloat Discipline
 - Reuse existing project primitives and stdlib before adding external packages.

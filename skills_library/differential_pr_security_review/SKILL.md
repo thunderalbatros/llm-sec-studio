@@ -20,4 +20,4 @@ Use before merging PRs, validating security patches, or checking if a refactor s
 ## 3. Post-Patch Verification
 - Verify the patch fixes the **root cause** (not just a single symptom string).
 - Check for missing negative tests: every security fix requires at least one automated test proving the vulnerable input is now rejected and benign inputs still succeed.
-- Run `python tools/run_gates.py` and report explicit coverage boundaries (files reviewed vs. skipped) and confidence level.
+- Run `uv run run-gates` and report explicit coverage boundaries (files reviewed vs. skipped) and confidence level.

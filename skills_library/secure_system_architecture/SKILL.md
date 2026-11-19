@@ -28,4 +28,4 @@ Use when designing new APIs/services, implementing auth/sessions/crypto, or hard
 - [ ] Strict schema validation (`Valibot`/`Zod`) rejecting unknown fields (`additionalProperties: false`).
 - [ ] Parameterized queries everywhere; zero string concatenation in SQL/shell.
 - [ ] Bounded rate limits, body size caps, and outbound SSRF allowlists (block `169.254.169.254`, RFC1918, `::1`).
-- [ ] Run `python tools/run_gates.py` before sign-off.
+- [ ] Run `uv run run-gates` before sign-off.

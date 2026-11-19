@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-tools/llm_health_benchmark.py — Real End-to-End Micro-Benchmark for local IAP-tunneled llama.cpp server.
+llm_sec_studio.tools.llm_health_benchmark — Real End-to-End Micro-Benchmark for local IAP-tunneled llama.cpp server.
 Measures:
   1. Streaming TTFT (ms), generation tok/s, prompt tok/s, and reasoning (<think>) vs content ratio.
-  2. Nested JSON Tool Calling accuracy + live round-trip execution of tools/query_arsenal.py.
+  2. Nested JSON Tool Calling accuracy + live round-trip execution of llm_sec_studio.tools.query_arsenal.
   3. Defensive vulnerability patching on a vulnerable SQL snippet.
 """
 import argparse
@@ -168,7 +168,7 @@ def bench_nested_tool_calling(base_url: str, model: str, api_key: str) -> dict:
                 "type": "function",
                 "function": {
                     "name": "query_arsenal",
-                    "description": "Search curated RAG knowledge via tools/query_arsenal.py.",
+                    "description": "Search curated RAG knowledge via uv run query-arsenal.",
                     "parameters": {
                         "type": "object",
                         "properties": {

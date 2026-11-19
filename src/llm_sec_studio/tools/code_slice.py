@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-tools/code_slice.py — Zero-MCP-overhead symbol-level code navigator for Cline & local agents.
+llm_sec_studio.tools.code_slice — Zero-MCP-overhead symbol-level code navigator for Cline & local agents.
 Extracts compact outlines, exact symbol bodies (Python AST / JS-TS regex), and bounded ast-grep refs.
 """
 from __future__ import annotations

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-tools/token_audit_proxy.py — Opt-in local OpenAI telemetry & reversible CCR proxy (127.0.0.1:8001 -> :8000).
+llm_sec_studio.tools.token_audit_proxy — Opt-in local OpenAI telemetry & reversible CCR proxy (127.0.0.1:8001 -> :8000).
 Preserves static system prefixes byte-identically for llama-server prefix cache hits,
 logs per-turn token usage/cache hits to .cache/token_telemetry.jsonl, and compacts only huge repetitive logs.
 """

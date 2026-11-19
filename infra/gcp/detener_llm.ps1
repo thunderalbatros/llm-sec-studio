@@ -42,7 +42,11 @@ foreach ($pf in @($PidFile, $HeadroomPidFile)) {
 }
 
 Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-    Where-Object { $_.Name -match 'headroom' -and $_.CommandLine -match 'proxy' } |
+    Where-Object {
+        $_.ProcessId -ne $PID -and
+        $_.CommandLine -match 'proxy' -and
+        ($_.Name -match '^headroom' -or ($_.Name -match '^python' -and $_.CommandLine -match 'headroom\.exe'))
+    } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 
 $listeners = Get-NetTCPConnection -LocalAddress "127.0.0.1" -LocalPort $LocalPort -State Listen -ErrorAction SilentlyContinue

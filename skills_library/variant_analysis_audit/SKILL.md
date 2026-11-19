@@ -27,4 +27,4 @@ Before writing any rule, separate:
 
 ## 4. Triage & Lock In Regression Prevention
 - Inspect every match; classify `TRUE_POSITIVE` / `FALSE_POSITIVE` with file:line evidence.
-- Patch all confirmed variants together and commit the rule to `config/ast_rules/` so `tools/run_gates.py` prevents re-introduction permanently.
+- Patch all confirmed variants together and commit the rule to `config/ast_rules/` so `uv run run-gates` prevents re-introduction permanently.

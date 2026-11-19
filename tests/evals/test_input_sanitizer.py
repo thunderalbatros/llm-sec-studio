@@ -1,4 +1,4 @@
-"""Deterministic evals for guardrails/input_sanitizer.py (Unicode tags, homoglyphs, ChatML/think, Spotlighting)."""
+"""Deterministic evals for llm_sec_studio.guardrails.input_sanitizer (Unicode tags, homoglyphs, ChatML/think, Spotlighting)."""
 import re
 
 from llm_sec_studio.guardrails.input_sanitizer import SpotlightingSession, sanitize_untrusted_input

@@ -22,7 +22,7 @@ Use strictly for defensive malware/artifact triage, SBOM & binary dependency ins
 - **Ghidra Headless (`analyzeHeadless`):**
   - Run `-readOnly -noanalysis` or targeted post-scripts emitting concise JSON summaries (`<= 1,200` tokens) rather than raw full-binary dumps.
 - **REA MCP (`compact` profile):**
-  - Query targeted functions/xrefs only; pass bulky outputs through `tools/prompt_sanitizer.py --compress` before LLM analysis.
+  - Query targeted functions/xrefs only; pass bulky outputs through `uv run input-sanitizer --compress` before LLM analysis.
 
 ## 3. Defensive Deliverable
 Produce a structured triage brief: binary hardening flags, suspicious APIs/URLs/IOCs, root cause of defect/behavior, and YARA/Sigma detection signatures.

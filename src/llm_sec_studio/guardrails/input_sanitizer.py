@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-guardrails/input_sanitizer.py — Deterministic Zero-Trust Anti-Prompt-Injection Shield
+llm_sec_studio.guardrails.input_sanitizer — Deterministic Zero-Trust Anti-Prompt-Injection Shield
 for abliterated LLMs (Huihui-Qwen3.8-27B-Coder390-EfficientThink-abliterated).
 
 Defenses implemented (zero external dependencies, <2 ms, ~0 MB extra RAM):

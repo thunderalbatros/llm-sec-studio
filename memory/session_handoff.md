@@ -7,7 +7,7 @@
   "active_goal": "Optimización de contexto y desarrollo modular",
   "verified_state": [
     "VM GCP Zero-Trust en northamerica-northeast2-a con Qwen3.8-27B Gated DeltaNet",
-    "tools/run_gates.py PASS (<3s), tools/code_slice.py activo (0 tokens MCP)"
+    "uv run run-gates PASS (<2s), uv run code-slice activo (0 tokens MCP)"
   ],
   "touched_files": [],
   "open_blockers": [],
