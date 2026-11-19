@@ -1,0 +1,33 @@
+[project]
+name = "llm-sec-studio"
+version = "1.0.0"
+description = "Isolated Zero-Trust GCP LLM Runtime, Anti-Prompt-Injection Guardrails, Curated Skills, and Sandbox Bridge"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+run-gates = "llm_sec_studio.tools.run_gates:main"
+query-arsenal = "llm_sec_studio.tools.query_arsenal:main"
+code-slice = "llm_sec_studio.tools.code_slice:main"
+llm-bench = "llm_sec_studio.tools.llm_health_benchmark:main"
+token-proxy = "llm_sec_studio.tools.token_audit_proxy:main"
+input-sanitizer = "llm_sec_studio.guardrails.input_sanitizer:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+  "live: live end-to-end tests requiring the GCP Qwen 3.8 27B IAP tunnel at 127.0.0.1:8000",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "W"]
+
+[tool.ty.environment]
+python-version = "3.11"

@@ -1,0 +1,5 @@
+# Gitleaks baseline configuration for llm-sec-studio
+title = "LLM-Sec-Studio Gitleaks Baseline"
+
+[extend]
+useDefault = true

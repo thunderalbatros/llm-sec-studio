@@ -1,0 +1,38 @@
+# Secrets & Credentials (STRICTLY EXCLUDED)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.secret
+secrets.json
+.qwen_api_key
+
+# Python & Tooling Caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ty_cache/
+
+# Runtime State, Telemetry & Local Databases
+.cache/
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.pid
+infra/gcp/vm_state.json
+
+# OS / IDE Artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

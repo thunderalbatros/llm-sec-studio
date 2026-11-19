@@ -1,0 +1,46 @@
+id: py-subprocess-shell-true
+language: python
+severity: error
+message: Avoid shell=True in subprocess calls; pass an argv list instead.
+rule:
+  all:
+    - any:
+        - pattern: subprocess.run($$$)
+        - pattern: subprocess.Popen($$$)
+        - pattern: subprocess.call($$$)
+    - has:
+        kind: keyword_argument
+        regex: "^shell\\s*=\\s*True$"
+        stopBy: end
+---
+id: py-unsafe-eval-exec
+language: python
+severity: error
+message: Avoid eval()/exec() on dynamic input.
+rule:
+  any:
+    - pattern: eval($ARG)
+    - pattern: exec($ARG)
+---
+id: py-unsafe-yaml-load
+language: python
+severity: error
+message: Use yaml.safe_load instead of yaml.load without SafeLoader.
+rule:
+  pattern: yaml.load($ARG)
+---
+id: js-unsafe-eval
+language: javascript
+severity: error
+message: Avoid eval() / new Function() which enable code injection.
+rule:
+  any:
+    - pattern: eval($ARG)
+    - pattern: new Function($$$)
+---
+id: js-sql-string-concat
+language: javascript
+severity: error
+message: Avoid string concatenation inside db.prepare(); use parameterized queries.
+rule:
+  pattern: $DB.prepare($A + $B)

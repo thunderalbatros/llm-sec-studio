@@ -1,0 +1,49 @@
+{
+  "version": "1.0.1",
+  "mode": "strict_allowlist",
+  "allowed_domains": [
+    "localhost",
+    "127.0.0.1",
+    "example.com"
+  ],
+  "allowed_cidrs": [
+    "127.0.0.1/32"
+  ],
+  "denied_cidrs": [
+    "169.254.169.254/32",
+    "169.254.0.0/16",
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16"
+  ],
+  "allowed_local_roots": [
+    "C:/Users/tomas/Desktop/llm-sec-studio"
+  ],
+  "excluded_tar_patterns": [
+    ".env",
+    ".env.*",
+    ".git",
+    "node_modules",
+    "__pycache__",
+    "secrets.json",
+    ".qwen_api_key",
+    "*.pem",
+    "*.key"
+  ],
+  "objectives": {
+    "testphp": {
+      "target_domain": "testphp.vulnweb.com",
+      "allowed_domains": [
+        "testphp.vulnweb.com",
+        "*.testphp.vulnweb.com"
+      ],
+      "denied_cidrs": [
+        "169.254.169.254/32",
+        "169.254.0.0/16",
+        "10.0.0.0/8",
+        "172.16.0.0/12",
+        "192.168.0.0/16"
+      ]
+    }
+  }
+}

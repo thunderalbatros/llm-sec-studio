@@ -1,0 +1,26 @@
+# .clineignore — llm-sec-studio (Context & Secret Hygiene)
+.git/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ty_cache/
+.cache/
+
+# Secrets & Keys (STRICTLY BLOCKED)
+.env
+.env.*
+.dev.vars
+*.pem
+*.key
+*.secret
+secrets.json
+.qwen_api_key
+
+# Logs & Databases
+*.log
+*.pid
+*.sqlite*
+*.db*

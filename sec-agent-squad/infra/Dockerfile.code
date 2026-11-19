@@ -1,0 +1,49 @@
+# sec-agent-squad/infra/Dockerfile.code
+# Strictly defensive offline SAST & supply-chain analysis sandbox (--network=none, gVisor runsc, --read-only, UID 65534)
+FROM debian:bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    HOME=/tmp \
+    XDG_CACHE_HOME=/tmp/.cache \
+    TMPDIR=/tmp \
+    NPM_CONFIG_CACHE=/tmp/.npm \
+    PIP_CACHE_DIR=/tmp/.pip \
+    SEMGREP_SEND_METRICS=off \
+    SEMGREP_SETTINGS_FILE=/tmp/.semgrep/settings.yml \
+    PATH="/opt/venv/bin:/opt/npm-global/bin:/usr/local/bin:/usr/bin:/bin"
+
+RUN apt-get update -qq && apt-get install -y --no-install-recommends \
+      ca-certificates curl gnupg git python3 python3-venv python3-pip jq tar gzip unzip \
+      default-jre-headless radare2 \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python SAST virtualenv (semgrep + ruff)
+RUN python3 -m venv /opt/venv \
+    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
+    && /opt/venv/bin/pip install --no-cache-dir semgrep ruff
+
+# Node CLI static analyzers (ast-grep + tree-sitter-cli) isolated in /opt/npm-global (avoids /usr/bin/sg collision)
+RUN npm install -g --prefix /opt/npm-global --no-audit --no-fund @ast-grep/cli tree-sitter-cli \
+    && npm cache clean --force
+
+# Precompiled security binaries: gitleaks + trivy (resolved cleanly from official GitHub releases)
+RUN GITLEAKS_URL="$(curl -fsSL https://api.github.com/repos/gitleaks/gitleaks/releases/latest | jq -r '.assets[] | select(.name | test("linux_x64\\.tar\\.gz$")) | .browser_download_url' | head -n 1)" \
+    && TRIVY_URL="$(curl -fsSL https://api.github.com/repos/aquasecurity/trivy/releases/latest | jq -r '.assets[] | select(.name | test("Linux-64bit\\.tar\\.gz$")) | .browser_download_url' | head -n 1)" \
+    && curl -fsSL "$GITLEAKS_URL" | tar -xz -C /usr/local/bin gitleaks \
+    && curl -fsSL "$TRIVY_URL" | tar -xz -C /usr/local/bin trivy \
+    && chmod 755 /usr/local/bin/gitleaks /usr/local/bin/trivy
+
+# Reverse Engineering toolkits: ghidra + jadx (both need JRE 17, already installed above)
+RUN GHIDRA_URL="$(curl -fsSL https://api.github.com/repos/NationalSecurityAgency/ghidra/releases/latest | jq -r '.assets[] | select(.name | test("*_Public_Release\\.zip$")) | .browser_download_url' | head -n 1)" \
+    && JADX_URL="$(curl -fsSL https://api.github.com/repos/skylot/jadx/releases/latest | jq -r '.assets[] | select(.name | test("jadx-.*-zip-with-deps\\.zip$")) | .browser_download_url' | head -n 1)" \
+    && curl -fsSL "$GHIDRA_URL" -o /tmp/ghidra.zip && unzip -q /tmp/ghidra.zip -d /opt/ghidra && rm /tmp/ghidra.zip \
+    && ln -sf /opt/ghidra/ghidra_*/support/analyzeHeadless /usr/local/bin/analyzeHeadless \
+    && curl -fsSL "$JADX_URL" -o /tmp/jadx.zip && unzip -q /tmp/jadx.zip -d /opt/jadx && rm /tmp/jadx.zip \
+    && ln -sf /opt/jadx/bin/jadx /usr/local/bin/jadx \
+    && chmod 755 /usr/local/bin/analyzeHeadless /usr/local/bin/jadx
+
+WORKDIR /tmp
+USER 65534:65534
+CMD ["sh", "-c", "echo sec-sandbox-code-ready"]

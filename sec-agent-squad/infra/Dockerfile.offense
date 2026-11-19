@@ -1,0 +1,49 @@
+# sec-agent-squad/infra/Dockerfile.offense
+# Offensive scanning sandbox: nuclei + ffuf + subfinder + nmap + katana + dalfox
+# (ProjectDiscovery Go binaries + nmap via apt) with a Python venv for jwt_tool and arjun.
+# gVisor runsc, --read-only, UID 65534, network enabled, --cap-add=NET_RAW (nmap).
+FROM debian:bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    HOME=/tmp \
+    XDG_CACHE_HOME=/tmp/.cache \
+    TMPDIR=/tmp \
+    PIP_CACHE_DIR=/tmp/.pip \
+    PATH="/opt/venv/bin:/usr/local/bin:/usr/bin:/bin"
+
+RUN apt-get update -qq && apt-get install -y --no-install-recommends \
+      ca-certificates curl tar gzip jq nmap python3 python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python venv: jwt_tool + arjun (Fuzzing de JWT y parametros ocultos)
+RUN python3 -m venv /opt/venv \
+    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
+    && /opt/venv/bin/pip install --no-cache-dir jwt_tool arjun
+
+# ProjectDiscovery static Go binaries: nuclei + ffuf + subfinder + katana + dalfox (official GitHub releases)
+RUN NUCLEI_URL="$(curl -fsSL https://api.github.com/repos/projectdiscovery/nuclei/releases/latest | jq -r '.assets[] | select(.name | test("nuclei_[0-9].*_linux_amd64.zip$")) | .browser_download_url' | head -n 1)" \
+    && FFUF_URL="$(curl -fsSL https://api.github.com/repos/ffuf/ffuf/releases/latest | jq -r '.assets[] | select(.name | test("ffuf_.*_linux_amd64.tar.gz$")) | .browser_download_url' | head -n 1)" \
+    && SUBFINDER_URL="$(curl -fsSL https://api.github.com/repos/projectdiscovery/subfinder/releases/latest | jq -r '.assets[] | select(.name | test("subfinder_.*_linux_amd64.zip$")) | .browser_download_url' | head -n 1)" \
+    && KATANA_URL="$(curl -fsSL https://api.github.com/repos/projectdiscovery/katana/releases/latest | jq -r '.assets[] | select(.name | test("katana_.*_linux_amd64.zip$")) | .browser_download_url' | head -n 1)" \
+    && DALFOX_URL="$(curl -fsSL https://api.github.com/repos/projectdiscovery/dalfox/releases/latest | jq -r '.assets[] | select(.name | test("dalfox_.*_linux_amd64.zip$")) | .browser_download_url' | head -n 1)" \
+    && curl -fsSL "$NUCLEI_URL" -o /tmp/nuclei.zip \
+    && curl -fsSL "$FFUF_URL" -o /tmp/ffuf.tar.gz \
+    && curl -fsSL "$SUBFINDER_URL" -o /tmp/subfinder.zip \
+    && curl -fsSL "$KATANA_URL" -o /tmp/katana.zip \
+    && curl -fsSL "$DALFOX_URL" -o /tmp/dalfox.zip \
+    && python3 -m zipfile -e /tmp/nuclei.zip /tmp/nuclei-extract/ \
+    && tar -xzf /tmp/ffuf.tar.gz -C /tmp \
+    && python3 -m zipfile -e /tmp/subfinder.zip /tmp/subfinder-extract/ \
+    && python3 -m zipfile -e /tmp/katana.zip /tmp/katana-extract/ \
+    && python3 -m zipfile -e /tmp/dalfox.zip /tmp/dalfox-extract/ \
+    && mv /tmp/nuclei-extract/nuclei /usr/local/bin/nuclei \
+    && mv /tmp/ffuf/ffuf /usr/local/bin/ffuf \
+    && mv /tmp/subfinder-extract/subfinder /usr/local/bin/subfinder \
+    && mv /tmp/katana-extract/katana /usr/local/bin/katana \
+    && mv /tmp/dalfox-extract/dalfox /usr/local/bin/dalfox \
+    && chmod 755 /usr/local/bin/nuclei /usr/local/bin/ffuf /usr/local/bin/subfinder /usr/local/bin/katana /usr/local/bin/dalfox \
+    && rm -rf /tmp/nuclei.zip /tmp/ffuf.tar.gz /tmp/subfinder.zip /tmp/katana.zip /tmp/dalfox.zip /tmp/nuclei-extract /tmp/ffuf /tmp/subfinder-extract /tmp/katana-extract /tmp/dalfox-extract
+
+WORKDIR /tmp
+USER 65534:65534
+CMD ["sh", "-c", "echo sec-sandbox-offense-ready"]
