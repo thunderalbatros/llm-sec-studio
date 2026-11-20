@@ -4,11 +4,10 @@ Standalone Zero-Trust GCP LLM Runtime (`Qwen 3.8 27B` at `131K` context on NVIDI
 
 Separated cleanly from `C:\Users\tomas\Desktop\web-software-factory` (`Academia IA`) with `0 MB` duplicate RAG storage (reads `.cache/rag_*.sqlite` strictly `?mode=ro`).
 
-## Daily GCP Lifecycle (compatible via `~/scripts-gcp-llm/`)
-- Start VM + IAP tunnel (`127.0.0.1:8000/v1`): `~\scripts-gcp-llm\iniciar_llm.ps1`
-- Inspect status & FinOps estimate: `~\scripts-gcp-llm\estado_llm.ps1`
-- Optional Headroom CCR Proxy (`127.0.0.1:8787/v1`): `~\scripts-gcp-llm\iniciar_headroom.ps1 -Background`
-- Stop tunnel + proxy + VM (`$0.00/h` compute): `~\scripts-gcp-llm\detener_llm.ps1`
+## Daily GCP Lifecycle (2-command workflow via `~/scripts-gcp-llm/`)
+- Open session (Preflight `$0/h` + VM + IAP `:8000` + Headroom `--lossless` `:8787`): `~\scripts-gcp-llm\abrir_sesion.ps1` *(supports `-OfflineOnly`, `-NoHeadroom`, `-SmokeTest`)*
+- Close session (optional live evals + immediate `$0.00/h` stop + full QA + index): `~\scripts-gcp-llm\cerrar_sesion.ps1` *(supports `-RunLiveEvals`, `-Milestone "..."`)*
+- Low-level scripts: `iniciar_llm.ps1`, `estado_llm.ps1`, `iniciar_headroom.ps1 -Background`, `detener_llm.ps1`
 
 ## Core Studio CLIs (from `llm-sec-studio` root)
 - Fast quality & security gates (`< 2s`): `uv run run-gates` (or `--full`)

@@ -15,7 +15,6 @@ sudo docker run --rm \
   --cap-add=NET_RAW \
   --cap-drop=ALL \
   --security-opt=no-new-privileges \
-  --network=host \
   --memory=1g \
   --pids-limit=256 \
   --user 65534:65534 \

@@ -26,6 +26,7 @@ $ArgsList = @(
     "--openai-api-url", $UpstreamUrl,
     "--mode", "cache",
     "--disable-kompress",
+    "--lossless",
     "--no-telemetry",
     "--log-file", $LogFile
 )
@@ -36,7 +37,7 @@ if ($Background) {
     $ErrLog = Join-Path $env:TEMP "headroom-proxy.err.log"
     $proc = Start-Process -FilePath $HeadroomExe -ArgumentList $ArgsList -WindowStyle Hidden -PassThru -RedirectStandardOutput $OutLog -RedirectStandardError $ErrLog
     Set-Content -Path $PidFile -Value $proc.Id -Encoding Ascii
-    Write-Host "Headroom Proxy v0.44 activo en http://127.0.0.1:$Port/v1 -> $UpstreamUrl (PID $($proc.Id), modo=cache, CCR=ON, sin ML pesado)." -ForegroundColor Green
+    Write-Host "Headroom Proxy v0.44 activo en http://127.0.0.1:$Port/v1 -> $UpstreamUrl (PID $($proc.Id), modo=cache, lossless=ON, sin CCR ni ML pesado)." -ForegroundColor Green
 } else {
     Write-Host "Iniciando Headroom Proxy v0.44 en http://127.0.0.1:$Port/v1 -> $UpstreamUrl (Ctrl+C para detener)..." -ForegroundColor Cyan
     & $HeadroomExe @ArgsList

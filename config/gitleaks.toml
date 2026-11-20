@@ -3,3 +3,15 @@ title = "LLM-Sec-Studio Gitleaks Baseline"
 
 [extend]
 useDefault = true
+
+[[rules]]
+id = "llm-sec-studio-qwen-api-key"
+description = "Hardcoded Qwen or OpenAI-compatible runtime API key assignment"
+regex = '''(?i)(?:qwen_api_key|openai_api_key)\s*[:=]\s*["']?([A-Za-z0-9_.-]{20,})["']?'''
+secretGroup = 1
+entropy = 3.2
+keywords = ["qwen_api_key", "openai_api_key"]
+
+[rules.allowlist]
+regexes = ['''^(?:your[-_]|example[-_]|dummy[-_]|changeme|placeholder|<[A-Za-z0-9_-]+>)''']
+paths = ['''^\.env\.example$''', '''^tests/''', '''^config/promptfooconfig\.yaml$''']

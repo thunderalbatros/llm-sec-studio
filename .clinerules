@@ -1,8 +1,10 @@
 # .clinerules — Directiva Operativa llm-sec-studio (Qwen 3.8 27B 131K + RTK + Arsenal RAG)
 
 ## 1. RTK (Rust Token Killer) y Reglas PowerShell 5.1 (Windows — Anti-Colapso de Contexto)
-- En Windows PowerShell 5.1 está **PROHIBIDO** usar `&&` (usá `;`), **PROHIBIDO** usar `2>nul` (causa `FileStream NotSupportedException`; usá `2>$null`), **PROHIBIDO** usar `cmd /c dir` y **PROHIBIDO** usar `rtk ls` (no existe `ls.exe` en Windows).
-- Para explorar archivos/directorios usá SIEMPRE las herramientas nativas (`list_files`, `read_file`, `search_files`) en lugar de comandos de terminal; así evitás saturar el buffer.
+- En Windows PowerShell 5.1 está **PROHIBIDO** usar `&&` (usá `;`), **PROHIBIDO** usar `2>nul` (causa `FileStream NotSupportedException`), **PROHIBIDO** usar `cmd /c dir` y **PROHIBIDO** usar `rtk ls`.
+- En **Plan Mode** está **PROHIBIDO** usar cualquier redirección `>` (incluido `2>$null`, bloqueado por el sandbox de solo lectura de Cline): usá `-ErrorAction SilentlyContinue` y herramientas nativas (`list_files`, `read_file`, `search_files`).
+- **Regla anti-bucle:** si un comando o herramienta MCP falla **2 veces seguidas** con el mismo error, detenete de inmediato e informalo al usuario en lugar de depurar herramientas internas en bucle.
+- Al iniciar `/newtask`, leé primero `memory/session_handoff.md` y consultá `icm.exe facts list llm-sec-studio` para recuperar contexto sin explorar desde cero.
 - Prefix supported external binaries with `rtk`: `rtk git status`, `rtk git diff`, `rtk pytest`.
 - Acotá siempre cualquier salida de consola (`| Select-Object -First 40`) y mantené cada archivo nuevo o editado por debajo de `120–150` líneas modulares.
 
@@ -24,6 +26,7 @@
 ## 4. Seguridad Estricta y Alcance Autorizado
 - **Prohibido** leer, imprimir, exponer o volcar `.env`, `.env.*`, `secrets.json`, `.qwen_api_key` o credenciales. No accedas ni modifiques el repo hermano `web-software-factory` desde sesiones de seguridad.
 - Toda prueba de seguridad o validación debe restringirse estrictamente a **entornos locales aislados** o **alcances autorizados en `sec-agent-squad/config/authorized_scope.json`**.
+- La fuente de verdad de proyecto, instancia y zona de la VM GCP es `~\scripts-gcp-llm\vm_state.json` (verificar con `~\scripts-gcp-llm\estado_llm.ps1`; no hardcodear zona ni apagar/recrear la VM sin orden explícita).
 
 ## 5. Perfiles de Muestreo Recomendados (Qwen 3.8 27B)
 - **Razonamiento / Arquitectura (`Plan`):** `temperature=1.0`, `top_p=0.95`, `top_k=20`, `min_p=0.0`, `presence_penalty=0.0`, `repeat_penalty=1.0`.

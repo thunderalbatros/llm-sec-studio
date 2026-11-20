@@ -1,4 +1,4 @@
-﻿# PLAN_ARQUITECTURA — sec-agent-squad
+# PLAN_ARQUITECTURA — sec-agent-squad
 
 > Sistema multi-agente en LangGraph para auditoria AppSec, deteccion de fugas web, ingenieria inversa y remediacion sobre infraestructura Zero-Trust en GCP.
 > Runtime local: Python 3.11+ + SqliteSaver + SSH IAP persistente hacia sandboxes gVisor (runsc) en VM GCP.

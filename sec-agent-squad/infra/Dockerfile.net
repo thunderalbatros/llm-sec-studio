@@ -13,7 +13,7 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
       ca-certificates curl openssl dnsutils jq tar gzip libatomic1 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir playwright httpx \
+RUN pip install --no-cache-dir playwright httpx schemathesis mitmproxy \
     && playwright install --with-deps chromium \
     && chmod -R a+rX /opt/pw-browsers \
     && rm -rf /var/lib/apt/lists/*

@@ -24,3 +24,8 @@ secrets.json
 *.pid
 *.sqlite*
 *.db*
+
+# Runtime Agent Artifacts (Pointer, not Payload)
+sec-agent-squad/reports/
+sec-agent-squad/checkpoints.db*
+*.raw.txt

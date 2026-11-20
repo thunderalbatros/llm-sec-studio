@@ -4,7 +4,10 @@
   "allowed_domains": [
     "localhost",
     "127.0.0.1",
-    "example.com"
+    "example.com",
+    "testphp.vulnweb.com",
+    "*.testphp.vulnweb.com",
+    "*.example.com"
   ],
   "allowed_cidrs": [
     "127.0.0.1/32"

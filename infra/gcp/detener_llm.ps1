@@ -57,6 +57,14 @@ foreach ($l in $listeners) {
     }
 }
 
+$headroomListeners = Get-NetTCPConnection -LocalAddress "127.0.0.1" -LocalPort 8787 -State Listen -ErrorAction SilentlyContinue
+foreach ($hl in $headroomListeners) {
+    $hp = Get-Process -Id $hl.OwningProcess -ErrorAction SilentlyContinue
+    if ($hp -and $hp.ProcessName -match 'headroom|python') {
+        Stop-Process -Id $hp.Id -Force -ErrorAction SilentlyContinue
+    }
+}
+
 Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
     Where-Object { $_.CommandLine -match [regex]::Escape($Instance) -and $_.CommandLine -match 'start-iap-tunnel|8000:127\.0\.0\.1:8000' } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }

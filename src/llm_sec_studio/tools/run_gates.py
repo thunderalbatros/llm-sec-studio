@@ -20,6 +20,7 @@ DEFAULT_PY_TARGETS = [
     "tests",
     "sec-agent-squad/guardrails/scope_enforcer.py",
     "sec-agent-squad/core/sandbox_executor.py",
+    "sec-agent-squad/core/output_compressor.py",
     "sec-agent-squad/tests",
 ]
 
@@ -54,6 +55,8 @@ def run_cmd(name: str, cmd: list[str], timeout: int = 30) -> dict:
             cwd=str(ROOT),
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout,
             check=False,
         )
@@ -145,6 +148,8 @@ def main() -> int:
                     input=payload,
                     capture_output=True,
                     text=True,
+                    encoding="utf-8",
+                    errors="replace",
                     timeout=15,
                     check=False,
                 )
